@@ -7,11 +7,32 @@ This file creates your application.
 
 from app import app
 from flask import render_template, request, redirect, url_for
+from flask_wtf import FlaskForm
+from wtforms import Stringfield
+from wtforms.validators import InputRequired
+from .form import ContactForm
+import smtplib
 
 
 ###
 # Routing for your application.
 ###
+
+@app.route('/contact', methods = ['GET', 'POST'])
+def contact ():
+    """Renders the website's contact page"""
+    
+    form = contactform()
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        subject = form.subject.data
+        message = form.message.data
+        
+        sendemail(fromname=name, formemail=email,fromsubject=subject, message= message)
+    return render_template('contact.html', form=form)
+        
+    
 
 @app.route('/')
 def home():
