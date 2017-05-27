@@ -32,7 +32,22 @@ def contact ():
         sendemail(fromname=name, formemail=email,fromsubject=subject, message= message)
     return render_template('contact.html', form=form)
         
+def sendemail(fromname, fromemail,msg):
+    toname = 'Andrianna Jack'
+    toaddr = 'andrianna.jack@gmail.com'
+    message = """From: {} <{}>\nTo: {} <{}>\nSubject: {}\n\n{}"""
     
+    messagetosend = message.format(fromname, fromemail, toname, toaddr, fromsubject, msg)
+
+    username = ''
+    password = ''
+
+    server = smtplib.SMTP('smtp.gmail.com:587')
+        server.starttls()
+        server.login(username,password)
+        server.sendmail(fromemail, toaddr, messagetosend)
+        server.quit()
+        return
 
 @app.route('/')
 def home():
